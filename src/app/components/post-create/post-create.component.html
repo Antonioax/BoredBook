@@ -2,7 +2,7 @@
   <div class="flex flex-col justify-center items-center gap-3 my-5">
     <input
       type="text"
-      class="w-[90vw] max-w-[500px] rounded-lg shadow-md resize-none p-3 py-2 text-center"
+      class="w-[70vw] max-w-[300px] rounded-lg shadow-md resize-none p-3 py-2 text-center"
       [(ngModel)]="title"
       name="title"
       placeholder="Title"
@@ -16,7 +16,11 @@
       placeholder="Write something here..."
       required
     ></textarea
-    ><button type="submit" class="py-2 px-3 bg-amber-500 rounded-lg shadow-lg">
+    ><button
+      type="submit"
+      class="py-2 px-3 bg-amber-500 rounded-lg shadow-lg"
+      [disabled]="postForm.invalid"
+    >
       Save Post
     </button>
   </div>
