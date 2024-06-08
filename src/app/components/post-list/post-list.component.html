@@ -1,0 +1,12 @@
+<div class="flex flex-col justify-center items-center">
+  @if(allPosts.length > 0){
+    @for(post of allPosts; track $index){
+    <div class="flex flex-col items-center my-5 w-[85vw] max-w-[450px]">
+      <div class="bg-amber-200 p-3 w-max rounded-t-lg py-2 font-medium shadow-lg">{{ post.title }}</div>
+      <div class="bg-amber-200 p-3 rounded-lg shadow-lg w-full">{{ post.content }}</div>
+    </div>
+    }
+  } @else {
+    <div class="mt-[15vh]">No posts added...</div>
+  }
+</div>
