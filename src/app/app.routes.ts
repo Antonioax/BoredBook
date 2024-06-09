@@ -18,4 +18,9 @@ export const routes: Routes = [
     component: PostCreateComponent,
     title: 'Create',
   },
+  {
+    path: 'edit/:postId',
+    component: PostCreateComponent,
+    title: 'Create',
+  },
 ];

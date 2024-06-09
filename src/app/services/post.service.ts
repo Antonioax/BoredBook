@@ -49,6 +49,26 @@ export class PostService {
       });
   }
 
+  getPost(id: string) {
+    return this.http.get<{_id: string, title: string, content: string}>('http://localhost:3000/api/posts/' + id);
+  }
+
+  updatePost(updatedPost: Post) {
+    this.http
+      .put('http://localhost:3000/api/posts/' + updatedPost.id, updatedPost)
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          const replaceIndex = this.allPosts.value.findIndex(
+            (p) => p.id === updatedPost.id
+          );
+          const replacePosts = [...this.allPosts.value];
+          replacePosts[replaceIndex] = updatedPost;
+          this.allPosts.next(replacePosts);
+        },
+      });
+  }
+
   deletePost(id: string) {
     this.http.delete('http://localhost:3000/api/posts/' + id).subscribe({
       next: (data) => {

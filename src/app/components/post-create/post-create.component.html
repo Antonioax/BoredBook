@@ -1,6 +1,10 @@
 <form (ngSubmit)="onSave(postForm)" #postForm="ngForm">
   <div class="flex flex-col justify-center items-center gap-3 mt-24">
+    @if(mode == "create"){
     <p class="mb-3 text-xl">Create a new Post here</p>
+    } @else {
+      <p class="mb-3 text-xl">Edit your Post here</p>
+    }
     <input
       type="text"
       class="w-[70vw] max-w-[300px] rounded-lg shadow-md resize-none p-3 py-2 text-center"
@@ -22,7 +26,7 @@
       class="py-2 px-3 bg-amber-500 rounded-lg shadow-lg"
       [disabled]="postForm.invalid"
     >
-      Save Post
+      {{ mode == "create" ? "Save Post" : "Edit Post"}}
     </button>
   </div>
 </form>
