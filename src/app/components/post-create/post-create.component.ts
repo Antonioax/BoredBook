@@ -3,7 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Post } from '../../models/post.model';
 import { PostService } from '../../services/post.service';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 @Component({
   selector: 'app-post-create',
@@ -20,7 +20,11 @@ export class PostCreateComponent implements OnInit {
   private postId?: string | null;
   private post?: Post;
 
-  constructor(private postService: PostService, public route: ActivatedRoute) {}
+  constructor(
+    private postService: PostService,
+    public route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -58,5 +62,6 @@ export class PostCreateComponent implements OnInit {
       : this.postService.updatePost(newPost);
 
     form.reset();
+    this.router.navigateByUrl('posts');
   }
 }
