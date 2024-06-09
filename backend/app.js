@@ -1,9 +1,21 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 const Post = require("./models/post");
 
 const app = express();
+
+mongoose
+  .connect(
+    "mongodb+srv://antonio:Ml5wv87L6b5qRpdn@cluster0.t769ucn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  )
+  .then(() => {
+    console.log("Connected to database succesfully!");
+  })
+  .catch(() => {
+    console.log("Connection failed!");
+  });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -26,29 +38,30 @@ app.post("/api/posts", (req, res, next) => {
     title: req.body.title,
     content: req.body.content,
   });
-  console.log(post);
-  res.status(201).json({
-    message: "Post added succesfully!",
+  post.save().then((result) => {
+    res.status(201).json({
+      message: "Post added succesfully!",
+      postId: result._id,
+    });
   });
 });
 
 app.get("/api/posts", (req, res, next) => {
-  const posts = [
-    {
-      id: "ijjoiji44iji",
-      title: "Post from server",
-      content: "Node and Express said HI.",
-    },
-    {
-      id: "gthzjuk8iuz5",
-      title: "Post from server numero dos",
-      content:
-        "Por que no bebidas vino con tus amigos pero miras tu computadora todos los dias?",
-    },
-  ];
-  res.status(200).json({
-    message: "Posts fetched succesfully!",
-    posts: posts,
+  Post.find().then((documents) => {
+    res.status(200).json({
+      message: "Posts fetched succesfully!",
+      posts: documents,
+    });
+  });
+});
+
+app.delete("/api/posts/:id", (req, res, next) => {
+  console.log(req.params.id);
+  Post.deleteOne({ _id: req.params.id }).then((result) => {
+    console.log(result);
+    res.status(200).json({
+      message: "Post deleted succesfully!",
+    });
   });
 });
 

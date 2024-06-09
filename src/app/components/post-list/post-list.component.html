@@ -5,8 +5,8 @@
       <div class="bg-amber-200 p-3 w-max rounded-t-lg py-2 font-medium shadow-lg">{{ post.title }}</div>
       <div class="bg-amber-200 p-3 rounded-lg shadow-lg w-full">{{ post.content }}</div>
       <div class="w-full flex justify-end">
-        <button class="bg-blue-400 p-3 w-max rounded-b-lg py-2 shadow-lg self-end text-xs mr-1" (click)="onEdit(post)">Edit</button>
-        <button class="bg-red-400 p-3 w-max rounded-b-lg py-2 shadow-lg self-end text-xs mr-4" (click)="onDelete(post)">Delete</button>
+        <button class="bg-blue-400 p-3 w-max rounded-b-lg py-2 shadow-lg self-end text-xs mr-1" (click)="onEdit(post.id)">Edit</button>
+        <button class="bg-red-400 p-3 w-max rounded-b-lg py-2 shadow-lg self-end text-xs mr-4" (click)="onDelete(post.id)">Delete</button>
       </div>
     </div>
     }

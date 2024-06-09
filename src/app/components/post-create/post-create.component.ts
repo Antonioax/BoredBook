@@ -21,7 +21,7 @@ export class PostCreateComponent {
     if (form.invalid) return;
 
     let newPost: Post = {
-      id: null,
+      id: "",
       title: this.title,
       content: this.content,
     };
