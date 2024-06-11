@@ -28,9 +28,9 @@
         (change)="onImagePicked($event)"
       />
     </div>
-    @if(imagePreview !== "" && imagePreview && form.get("image")?.valid){
+    @if(imagePreview !== "" && imagePreview && form.get("image")){
     <div
-      class="w-[90vw] max-w-[500px] rounded-lg shadow-md object-cover overflow-hidden"
+      class="w-[90vw] max-w-[500px] rounded-lg shadow-md object-cover overflow-hidden aspect-video"
     >
       <img [src]="imagePreview" alt="form.value.title" class="object-cover" />
     </div>
