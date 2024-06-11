@@ -14,6 +14,8 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   postSub!: Subscription;
 
+  isLoading: boolean = false;
+
   constructor(private postService: PostService, private router: Router) {}
 
   onDelete(id: string) {
@@ -25,9 +27,19 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.postSub = this.postService.allPosts.subscribe({
-      next: (data) => (this.allPosts = data),
-    });
+    this.isLoading = true;
+    this.postService
+      .returnPosts()
+      .then(() => {
+        this.postSub = this.postService.allPosts.subscribe({
+          next: (data) => {
+            this.allPosts = data;
+            console.log('all posts', this.allPosts);
+            this.isLoading = false;
+          },
+        });
+      })
+      .catch((err) => console.log(err));
   }
 
   ngOnDestroy() {

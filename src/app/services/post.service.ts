@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { Post } from '../models/post.model';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -9,20 +10,24 @@ import { HttpClient } from '@angular/common/http';
 export class PostService {
   allPosts = new BehaviorSubject<Post[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   addPost(newPost: Post) {
+    const postData = new FormData();
+    postData.append('title', newPost.title);
+    postData.append('content', newPost.content);
+    postData.append('image', newPost.image, newPost.title);
     this.http
-      .post<{ message: string; postId: string }>(
+      .post<{ message: string; post: Post }>(
         'http://localhost:3000/api/posts',
-        newPost
+        postData
       )
       .subscribe({
         next: (data) => {
-          const postId = data.postId;
-          newPost.id = postId;
+          const post = data.post;
           console.log(data);
-          this.allPosts.next([...this.allPosts.value, newPost]);
+          this.allPosts.next([...this.allPosts.value, post]);
+          this.router.navigateByUrl('posts');
         },
       });
   }
@@ -37,6 +42,7 @@ export class PostService {
               title: post.title,
               content: post.content,
               id: post._id,
+              image: post.imagePath
             };
           });
         })
@@ -49,8 +55,40 @@ export class PostService {
       });
   }
 
+  returnPosts(): Promise<Post[]> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .get<{ message: string; posts: any }>('http://localhost:3000/api/posts')
+        .pipe(
+          map((data) => {
+            return data.posts.map((post: any) => {
+              return {
+                title: post.title,
+                content: post.content,
+                id: post._id,
+                image: post.imagePath
+              };
+            });
+          })
+        )
+        .subscribe({
+          next: (data: Post[]) => {
+            this.allPosts.next(data);
+            resolve(this.allPosts.value);
+            console.log(data);
+          },
+          error: (err) => reject(err),
+        });
+    });
+  }
+
   getPost(id: string) {
-    return this.http.get<{_id: string, title: string, content: string}>('http://localhost:3000/api/posts/' + id);
+    return this.http.get<{
+      _id: string;
+      title: string;
+      content: string;
+      image: File;
+    }>('http://localhost:3000/api/posts/' + id);
   }
 
   updatePost(updatedPost: Post) {
@@ -65,6 +103,7 @@ export class PostService {
           const replacePosts = [...this.allPosts.value];
           replacePosts[replaceIndex] = updatedPost;
           this.allPosts.next(replacePosts);
+          this.router.navigateByUrl('posts');
         },
       });
   }
