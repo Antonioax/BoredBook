@@ -62,6 +62,7 @@ export class PostCreateComponent implements OnInit {
               content: this.post.content,
               image: this.post.imagePath,
             });
+            this.imagePreview = this.post.imagePath;
             this.isLoading = false;
           });
       } else {
