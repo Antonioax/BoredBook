@@ -14,7 +14,7 @@ import { PostService } from './services/post.service';
     PostCreateComponent,
     PostListComponent,
     HeaderComponent,
-    FooterComponent,
+    FooterComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

@@ -3,11 +3,13 @@ import { Post } from '../../models/post.model';
 import { PostService } from '../../services/post.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { PaginationComponent } from '../pagination/pagination.component';
 
 @Component({
   selector: 'app-post-list',
   templateUrl: './post-list.component.html',
   standalone: true,
+  imports: [PaginationComponent],
 })
 export class PostListComponent implements OnInit, OnDestroy {
   allPosts: Post[] = [];
