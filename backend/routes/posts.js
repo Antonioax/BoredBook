@@ -49,18 +49,29 @@ router.post(
   }
 );
 
-router.put("/:id", (req, res, next) => {
-  const post = new Post({
-    _id: req.body.id,
-    title: req.body.title,
-    content: req.body.content,
-  });
-  Post.updateOne({ _id: req.params.id }, post).then(() => {
-    res.status(200).json({
-      message: "Post updated succesfully!",
+router.put(
+  "/:id",
+  multer({ storage: storage }).single("image"),
+  (req, res, next) => {
+    let imagePath = req.body.imagePath;
+    if (req.file) {
+      const url = req.protocol + "://" + req.get("host");
+      imagePath = url + "/images/" + req.file.filename;
+    }
+    const post = new Post({
+      _id: req.body.id,
+      title: req.body.title,
+      content: req.body.content,
+      imagePath: imagePath,
     });
-  });
-});
+    console.log(post);
+    Post.updateOne({ _id: req.params.id }, post).then(() => {
+      res.status(200).json({
+        message: "Post updated succesfully!",
+      });
+    });
+  }
+);
 
 router.get("", (req, res, next) => {
   Post.find().then((documents) => {
