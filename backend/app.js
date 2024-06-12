@@ -4,12 +4,13 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 const postRoutes = require("./routes/posts");
+const userRoutes = require("./routes/user");
 
 const app = express();
 
 mongoose
   .connect(
-    "mongodb+srv://antonio:Ml5wv87L6b5qRpdn@cluster0.t769ucn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    "mongodb+srv://antonio:Ml5wv87L6b5qRpdn@cluster0.t769ucn.mongodb.net/w=majority&appName=Cluster0"
   )
   .then(() => {
     console.log("Connected to database succesfully!");
@@ -36,5 +37,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/posts", postRoutes);
+app.use("/api/user", userRoutes);
 
 module.exports = app;
