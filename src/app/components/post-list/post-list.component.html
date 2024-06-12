@@ -31,7 +31,7 @@
   }
 </div>
 
-<app-pagination></app-pagination>
+<app-pagination [length]="totalPosts" [pageSize]="pagePosts" [pageOptions]="pageOptions" (change)="onPaginationChange($event)"></app-pagination>
 } @else {
 <div class="flex justify-center items-center w-screen h-[60vh]">
   <span class="loader"></span>

@@ -3,7 +3,7 @@ import { Post } from '../../models/post.model';
 import { PostService } from '../../services/post.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { PaginationComponent } from '../pagination/pagination.component';
+import { EventData, PaginationComponent } from '../pagination/pagination.component';
 
 @Component({
   selector: 'app-post-list',
@@ -13,6 +13,9 @@ import { PaginationComponent } from '../pagination/pagination.component';
 })
 export class PostListComponent implements OnInit, OnDestroy {
   allPosts: Post[] = [];
+  totalPosts = 12;
+  pagePosts = 5;
+  pageOptions = [1, 2, 5, 10, 20];
 
   postSub!: Subscription;
 
@@ -26,6 +29,10 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   onEdit(id: string) {
     this.router.navigateByUrl('edit/' + id);
+  }
+
+  onPaginationChange(event: EventData) {
+    console.log(event);
   }
 
   ngOnInit() {
