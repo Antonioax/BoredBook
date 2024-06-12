@@ -39,7 +39,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   onPageChange(event: any) {
-    console.log(event.pageIndex || event.pageIndex === 0);
     if (event.pageIndex || event.pageIndex === 0) {
       this.isLoading = true;
       this.currentPage = event.pageIndex + 1;
