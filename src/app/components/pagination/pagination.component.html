@@ -55,7 +55,7 @@
           name=""
           id=""
           class="text-center rounded-lg bg-amber-100"
-          (change)="onChange($event)"
+          (change)="onChange()"
           [(ngModel)]="selectedOption"
         >
           @for (option of pageOptions(); track $index) {

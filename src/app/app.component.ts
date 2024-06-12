@@ -14,15 +14,11 @@ import { PostService } from './services/post.service';
     PostCreateComponent,
     PostListComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   constructor(private postService: PostService) {}
-
-  ngOnInit() {
-    this.postService.getPosts();
-  }
 }

@@ -8,7 +8,10 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class PostService {
-  allPosts = new BehaviorSubject<Post[]>([]);
+  allPosts = new BehaviorSubject<{ posts: Post[]; postCount: number }>({
+    posts: [],
+    postCount: 0,
+  });
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -24,57 +27,66 @@ export class PostService {
       )
       .subscribe({
         next: (data) => {
-          const post = data.post;
-          console.log(data);
-          this.allPosts.next([...this.allPosts.value, post]);
           this.router.navigateByUrl('posts');
         },
       });
   }
 
-  getPosts() {
+  getPosts(pageSize: number, currentPage: number) {
+    const queryParams = `?pageSize=${pageSize}&currentPage=${currentPage}`;
     this.http
-      .get<{ message: string; posts: any }>('http://localhost:3000/api/posts')
+      .get<{ message: string; posts: any; postCount: number }>(
+        'http://localhost:3000/api/posts' + queryParams
+      )
       .pipe(
         map((data) => {
-          return data.posts.map((post: any) => {
-            return {
-              title: post.title,
-              content: post.content,
-              id: post._id,
-              imagePath: post.imagePath,
-            };
-          });
-        })
-      )
-      .subscribe({
-        next: (data: Post[]) => {
-          this.allPosts.next(data);
-          console.log(data);
-        },
-      });
-  }
-
-  returnPosts(): Promise<Post[]> {
-    return new Promise((resolve, reject) => {
-      this.http
-        .get<{ message: string; posts: any }>('http://localhost:3000/api/posts')
-        .pipe(
-          map((data) => {
-            return data.posts.map((post: any) => {
+          return {
+            posts: data.posts.map((post: any) => {
               return {
                 title: post.title,
                 content: post.content,
                 id: post._id,
                 imagePath: post.imagePath,
               };
-            });
+            }),
+            postCount: data.postCount,
+          };
+        })
+      )
+      .subscribe({
+        next: (data) => {
+          this.allPosts.next(data);
+          console.log(data);
+        },
+      });
+  }
+
+  returnPosts(pageSize: number, currentPage: number): Promise<Post[]> {
+    const queryParams = `?pageSize=${pageSize}&currentPage=${currentPage}`;
+    return new Promise((resolve, reject) => {
+      this.http
+        .get<{ message: string; posts: any; postCount: number }>(
+          'http://localhost:3000/api/posts' + queryParams
+        )
+        .pipe(
+          map((data) => {
+            return {
+              posts: data.posts.map((post: any) => {
+                return {
+                  title: post.title,
+                  content: post.content,
+                  id: post._id,
+                  imagePath: post.imagePath,
+                };
+              }),
+              postCount: data.postCount,
+            };
           })
         )
         .subscribe({
-          next: (data: Post[]) => {
+          next: (data) => {
             this.allPosts.next(data);
-            resolve(this.allPosts.value);
+            resolve(this.allPosts.value.posts);
             console.log(data);
           },
           error: (err) => reject(err),
@@ -112,33 +124,12 @@ export class PostService {
       .put('http://localhost:3000/api/posts/' + updatedPost.id, postData)
       .subscribe({
         next: (data) => {
-          console.log(data);
-          const replaceIndex = this.allPosts.value.findIndex(
-            (p) => p.id === updatedPost.id
-          );
-          const post: Post = {
-            id: updatedPost.id,
-            title: updatedPost.title,
-            content: updatedPost.content,
-            imagePath: "",
-          };
-          const replacePosts = [...this.allPosts.value];
-          replacePosts[replaceIndex] = post;
-          this.allPosts.next(replacePosts);
           this.router.navigateByUrl('posts');
         },
       });
   }
 
   deletePost(id: string) {
-    this.http.delete('http://localhost:3000/api/posts/' + id).subscribe({
-      next: (data) => {
-        console.log(data);
-        const updatedPosts = this.allPosts.value.filter(
-          (post) => post.id !== id
-        );
-        this.allPosts.next(updatedPosts);
-      },
-    });
+    return this.http.delete('http://localhost:3000/api/posts/' + id);
   }
 }

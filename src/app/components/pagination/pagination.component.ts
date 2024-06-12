@@ -51,8 +51,8 @@ export class PaginationComponent implements OnInit {
     console.log('Total pages: ' + this.totalPages());
   }
 
-  onChange(event: Event) {
-    console.log((event.target as HTMLInputElement).value);
+  onChange() {
+    this.pageIndex.set(0);
     this.change.emit(this.changeOptions());
   }
 
