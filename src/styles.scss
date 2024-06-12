@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-// <weight>: Use a value from 200 to 800
+// Font
 * {
   font-family: "Dosis", sans-serif;
   font-optical-sizing: auto;
@@ -10,6 +10,7 @@
   font-style: normal;
 }
 
+// Spinner
 .loader {
   width: 48px;
   height: 48px;
@@ -29,8 +30,15 @@
   }
 }
 
+// Hiding scrollbars
 ::-webkit-scrollbar {
     width: 0px;
     background: transparent; /* make scrollbar transparent */
+}
+
+// Warning input fields
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+  box-shadow: inset 0 0 0 1px rgb(255, 0, 0);
 }
     

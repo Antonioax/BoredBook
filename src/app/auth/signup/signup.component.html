@@ -1,0 +1,35 @@
+@if(!isLoading){
+<form (ngSubmit)="onSignup(form)" #form="ngForm">
+  <div class="flex flex-col justify-center items-center gap-3 my-24">
+    <p class="mb-3 text-xl text-center">Become a new<br><span class="font-semibold">BoredBook</span><br>member</p>
+    <input
+      type="email"
+      class="w-[50vw] sm:w-[70vw] max-w-[300px] rounded-lg shadow-md resize-none p-3 py-2 text-center"
+      name="email"
+      placeholder="Email"
+      [(ngModel)]="email"
+      required
+      email
+    />
+    <input
+      type="password"
+      class="w-[50vw] sm:w-[70vw] max-w-[300px] rounded-lg shadow-md resize-none p-3 py-2 text-center"
+      name="password"
+      placeholder="Password"
+      [(ngModel)]="password"
+      required
+    />
+    <button
+      type="submit"
+      class="py-2 px-3 bg-amber-500 rounded-lg shadow-lg"
+      [disabled]="form.invalid"
+    >
+      Register
+    </button>
+  </div>
+</form>
+} @else {
+<div class="flex justify-center items-center w-screen h-[60vh]">
+  <span class="loader"></span>
+</div>
+}
