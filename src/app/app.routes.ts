@@ -3,6 +3,7 @@ import { PostListComponent } from './components/post-list/post-list.component';
 import { PostCreateComponent } from './components/post-create/post-create.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -29,10 +30,12 @@ export const routes: Routes = [
     path: 'create',
     component: PostCreateComponent,
     title: 'Create',
+    canActivate: [AuthGuard],
   },
   {
     path: 'edit/:postId',
     component: PostCreateComponent,
     title: 'Create',
+    canActivate: [AuthGuard],
   },
 ];
