@@ -15,22 +15,29 @@
       </div>
       {{ post.content }}
     </div>
-    @if (isAuthenticated) {
-    <div class="w-full flex justify-end">
-      <button
-        class="bg-blue-400 p-3 w-max rounded-b-lg py-2 shadow-lg self-end text-xs mr-1"
-        (click)="onEdit(post.id)"
+    <div class="w-full flex justify-between">
+      <div
+        class="bg-slate-900 text-white p-3 w-max rounded-b-lg py-2 shadow-lg self-end text-xs ml-4"
       >
-        Edit
-      </button>
-      <button
-        class="bg-red-400 p-3 w-max rounded-b-lg py-2 shadow-lg self-end text-xs mr-4"
-        (click)="onDelete(post.id)"
-      >
-        Delete
-      </button>
+        {{ post.creatorEmail }}
+      </div>
+      @if (isAuthenticated) {
+      <div>
+        <button
+          class="bg-blue-400 p-3 w-max rounded-b-lg py-2 shadow-lg self-end text-xs mr-1"
+          (click)="onEdit(post.id)"
+        >
+          Edit
+        </button>
+        <button
+          class="bg-red-400 p-3 w-max rounded-b-lg py-2 shadow-lg self-end text-xs mr-4"
+          (click)="onDelete(post.id)"
+        >
+          Delete
+        </button>
+      </div>
+      }
     </div>
-    }
   </div>
   } } @else if (!isLoading) {
   <div class="mt-[16px]">No posts added...</div>

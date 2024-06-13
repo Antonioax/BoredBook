@@ -47,6 +47,8 @@ export class PostService {
                 content: post.content,
                 id: post._id,
                 imagePath: post.imagePath,
+                creatorId: post.creatorId,
+                creatorEmail: post.creatorEmail,
               };
             }),
             postCount: data.postCount,
@@ -77,6 +79,8 @@ export class PostService {
                   content: post.content,
                   id: post._id,
                   imagePath: post.imagePath,
+                  creatorId: post.creatorId,
+                  creatorEmail: post.creatorEmail,
                 };
               }),
               postCount: data.postCount,
@@ -100,6 +104,8 @@ export class PostService {
       title: string;
       content: string;
       imagePath: string;
+      creatorId: string,
+      creatorEmail: string
     }>('http://localhost:3000/api/posts/' + id);
   }
 
@@ -117,6 +123,8 @@ export class PostService {
         title: updatedPost.title,
         content: updatedPost.content,
         imagePath: image,
+        creatorId: updatedPost.creatorId,
+        creatorEmail: updatedPost.creatorEmail
       };
     }
 

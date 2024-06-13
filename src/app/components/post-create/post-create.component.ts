@@ -56,6 +56,8 @@ export class PostCreateComponent implements OnInit {
               title: data.title,
               content: data.content,
               imagePath: data.imagePath,
+              creatorId: data.creatorId,
+              creatorEmail: data.creatorEmail,
             };
             this.form.setValue({
               title: this.post.title,
@@ -95,6 +97,8 @@ export class PostCreateComponent implements OnInit {
       title: this.form.value.title,
       content: this.form.value.content,
       imagePath: '',
+      creatorEmail: '',
+      creatorId: '',
     };
 
     this.mode == 'create'

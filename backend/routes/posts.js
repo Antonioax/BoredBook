@@ -36,6 +36,8 @@ router.post(
       title: req.body.title,
       content: req.body.content,
       imagePath: url + "/images/" + req.file.filename,
+      creatorId: req.userData.userId,
+      creatorEmail: req.userData.email,
     });
     post.save().then((result) => {
       res.status(201).json({
