@@ -12,7 +12,7 @@
     <a routerLink="/signup">Register</a>
     <a routerLink="/login">Login</a>
     } @if (isAuthenticated) {
-    <button>Logout</button>
+    <button (click)="onLogout()">Logout</button>
     }
     <a routerLink="/" class="font-semibold">BoredBook</a>
   </div>
