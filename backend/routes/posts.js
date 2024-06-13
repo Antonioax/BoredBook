@@ -1,6 +1,6 @@
 const express = require("express");
 const multer = require("multer");
-const checkAuth = require("../middleware/check-auth");
+const checkAuth = require("../middlewares/check-auth");
 
 const Post = require("../models/post");
 
