@@ -7,6 +7,7 @@ import {
   EventData,
   PaginationComponent,
 } from '../pagination/pagination.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-post-list',
@@ -25,7 +26,14 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   isLoading: boolean = false;
 
-  constructor(private postService: PostService, private router: Router) {}
+  authListenerSub!: Subscription;
+  isAuthenticated: boolean = false;
+
+  constructor(
+    private postService: PostService,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   onDelete(id: string) {
     this.isLoading = true;
@@ -61,9 +69,16 @@ export class PostListComponent implements OnInit, OnDestroy {
         });
       })
       .catch((err) => console.log(err));
+    this.isAuthenticated = this.authService.getIsAuth();
+    this.authListenerSub = this.authService
+      .getAuthStatusListener()
+      .subscribe((status) => {
+        this.isAuthenticated = status;
+      });
   }
 
   ngOnDestroy() {
     this.postSub.unsubscribe();
+    this.authListenerSub.unsubscribe();
   }
 }

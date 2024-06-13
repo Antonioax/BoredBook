@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -8,4 +10,21 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [RouterModule],
 })
-export class HeaderComponent {}
+export class HeaderComponent implements OnInit, OnDestroy {
+  isAuthenticated: boolean = false;
+  authListenerSub!: Subscription;
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    this.authListenerSub = this.authService
+      .getAuthStatusListener()
+      .subscribe((status) => {
+        this.isAuthenticated = status;
+      });
+  }
+
+  ngOnDestroy() {
+    this.authListenerSub.unsubscribe();
+  }
+}
