@@ -5,6 +5,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { PostListComponent } from './components/post-list/post-list.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { PostService } from './services/post.service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,10 @@ import { PostService } from './services/post.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  constructor(private postService: PostService) {}
+export class AppComponent implements OnInit {
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    this.authService.loginAuto();
+  }
 }
