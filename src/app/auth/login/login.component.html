@@ -33,4 +33,6 @@
 <div class="flex justify-center items-center w-screen h-[60vh]">
   <span class="loader"></span>
 </div>
+} @if (isDialog) {
+<app-dialog [message]="dialogText" (onClose)="isDialog = false"></app-dialog>
 }
