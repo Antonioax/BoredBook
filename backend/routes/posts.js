@@ -39,17 +39,24 @@ router.post(
       creatorId: req.userData.userId,
       creatorEmail: req.userData.email,
     });
-    post.save().then((result) => {
-      res.status(201).json({
-        message: "Post added succesfully!",
-        post: {
-          id: result._id,
-          title: result.title,
-          content: result.content,
-          imagePath: result.imagePath,
-        },
+    post
+      .save()
+      .then((result) => {
+        res.status(201).json({
+          message: "Post added succesfully!",
+          post: {
+            id: result._id,
+            title: result.title,
+            content: result.content,
+            imagePath: result.imagePath,
+          },
+        });
+      })
+      .catch((error) => {
+        res.status(500).json({
+          message: "Post create failed!",
+        });
       });
-    });
   }
 );
 
@@ -72,21 +79,24 @@ router.put(
       creatorEmail: req.userData.email,
     });
     console.log(post);
-    Post.updateOne(
-      { _id: req.params.id, creatorId: req.userData.userId },
-      post
-    ).then((result) => {
-      console.log(result);
-      if (result.modifiedCount > 0) {
-        res.status(200).json({
-          message: "Post updated succesfully!",
+    Post.updateOne({ _id: req.params.id, creatorId: req.userData.userId }, post)
+      .then((result) => {
+        console.log(result);
+        if (result.modifiedCount > 0) {
+          res.status(200).json({
+            message: "Post updated succesfully!",
+          });
+        } else {
+          res.status(401).json({
+            message: "You are not authorized!",
+          });
+        }
+      })
+      .catch((error) => {
+        res.status(500).json({
+          message: "Post update failed!",
         });
-      } else {
-        res.status(401).json({
-          message: "Not authorized!",
-        });
-      }
-    });
+      });
   }
 );
 
@@ -109,19 +119,30 @@ router.get("", (req, res, next) => {
         posts: fetchedPosts,
         postCount: count,
       });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Post fetch failed!",
+      });
     });
 });
 
 router.get("/:id", (req, res, next) => {
-  Post.findById(req.params.id).then((post) => {
-    if (post) {
-      res.status(200).json(post);
-    } else {
-      res.status(404).json({
-        message: "Post not found!",
+  Post.findById(req.params.id)
+    .then((post) => {
+      if (post) {
+        res.status(200).json(post);
+      } else {
+        res.status(404).json({
+          message: "Post not found!",
+        });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Post fetch failed!",
       });
-    }
-  });
+    });
 });
 
 router.delete("/:id", checkAuth, (req, res, next) => {
@@ -129,18 +150,24 @@ router.delete("/:id", checkAuth, (req, res, next) => {
   Post.deleteOne({
     _id: req.params.id,
     creatorId: req.userData.userId,
-  }).then((result) => {
-    console.log(result);
-    if (result.deletedCount > 0) {
-      res.status(200).json({
-        message: "Post deleted succesfully!",
+  })
+    .then((result) => {
+      console.log(result);
+      if (result.deletedCount > 0) {
+        res.status(200).json({
+          message: "Post deleted succesfully!",
+        });
+      } else {
+        res.status(401).json({
+          message: "You are not authorized!",
+        });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Post delete failed!",
       });
-    } else {
-      res.status(401).json({
-        message: "Not authorized!",
-      });
-    }
-  });
+    });
 });
 
 module.exports = router;
