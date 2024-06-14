@@ -8,7 +8,8 @@ import {
   withFetch,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { AuthInterceptor } from './interceptors/auth-interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { ErrorInterceptor } from "./interceptors/error.interceptor";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,6 +19,11 @@ export const appConfig: ApplicationConfig = {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true,
     },
   ],
