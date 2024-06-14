@@ -8,6 +8,7 @@ import {
   PaginationComponent,
 } from '../pagination/pagination.component';
 import { AuthService } from '../../services/auth.service';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-post-list',
@@ -28,6 +29,8 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   authListenerSub!: Subscription;
   isAuthenticated: boolean = false;
+
+  user!: User;
 
   constructor(
     private postService: PostService,
@@ -57,6 +60,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
+    this.user = this.authService.getUser();
     this.postService
       .returnPosts(this.pagePosts, this.currentPage)
       .then(() => {
@@ -74,6 +78,7 @@ export class PostListComponent implements OnInit, OnDestroy {
       .getAuthStatusListener()
       .subscribe((status) => {
         this.isAuthenticated = status;
+        this.user = this.authService.getUser();
       });
   }
 

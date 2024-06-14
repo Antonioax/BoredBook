@@ -21,7 +21,7 @@
       >
         {{ post.creatorEmail }}
       </div>
-      @if (isAuthenticated) {
+      @if (isAuthenticated && user.id === post.creatorId) {
       <div>
         <button
           class="bg-blue-400 p-3 w-max rounded-b-lg py-2 shadow-lg self-end text-xs mr-1"

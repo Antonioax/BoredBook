@@ -68,6 +68,8 @@ router.put(
       title: req.body.title,
       content: req.body.content,
       imagePath: imagePath,
+      creatorId: req.userData.userId,
+      creatorEmail: req.userData.email,
     });
     console.log(post);
     Post.updateOne(
