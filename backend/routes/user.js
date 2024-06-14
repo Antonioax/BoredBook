@@ -34,6 +34,7 @@ router.post("/login", (req, res, next) => {
     email: req.body.email,
   })
     .then((user) => {
+      console.log(user);
       if (!user) {
         return res.status(401).json({
           message: "Authentication failed!",
@@ -58,7 +59,7 @@ router.post("/login", (req, res, next) => {
           expiresIn: "1h",
         }
       );
-      res.status(200).json({
+      return res.status(200).json({
         message: "Authentication successfull!",
         token: token,
         expiresIn: 3600,
@@ -67,9 +68,9 @@ router.post("/login", (req, res, next) => {
       });
     })
     .catch((err) => {
-      return res.status(401).json({
-        message: "Authentication failed!",
-      });
+      if (!res.headersSent) {
+        res.status(500).json({ message: "Authentication failed!" });
+      }
     });
 });
 

@@ -41,10 +41,17 @@ export class AuthService {
       email: email,
       password: password,
     };
-    this.http
+    return this.http
       .post('http://localhost:3000/api/user/signup', authData)
-      .subscribe((data) => {
-        console.log(data);
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          this.router.navigate(['/']);
+        },
+        error: (error) => {
+          console.log(error);
+          this.authStatusListener.next(false);
+        },
       });
   }
 
@@ -61,30 +68,36 @@ export class AuthService {
         userId: string;
         userEmail: string;
       }>('http://localhost:3000/api/user/login', authData)
-      .subscribe((data) => {
-        console.log(data);
-        this.token = data.token;
-        if (this.token) {
-          let newUser: User = {
-            id: data.userId,
-            email: data.userEmail,
-          };
-          this.user = newUser;
-          this.isAuthenticated = true;
-          this.authStatusListener.next(true);
-          this.setAuthTimer(data.expiresIn);
-          const now = new Date();
-          const expirationDate = new Date(
-            now.getTime() + data.expiresIn * 1000
-          );
-          this.saveLocalAuth(
-            this.token,
-            expirationDate,
-            this.user.id,
-            this.user.email
-          );
-          this.router.navigate(['/']);
-        }
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          this.token = data.token;
+          if (this.token) {
+            let newUser: User = {
+              id: data.userId,
+              email: data.userEmail,
+            };
+            this.user = newUser;
+            this.isAuthenticated = true;
+            this.authStatusListener.next(true);
+            this.setAuthTimer(data.expiresIn);
+            const now = new Date();
+            const expirationDate = new Date(
+              now.getTime() + data.expiresIn * 1000
+            );
+            this.saveLocalAuth(
+              this.token,
+              expirationDate,
+              this.user.id,
+              this.user.email
+            );
+            this.router.navigate(['/']);
+          }
+        },
+        error: (error) => {
+          console.log(error);
+          this.authStatusListener.next(false);
+        },
       });
   }
 
