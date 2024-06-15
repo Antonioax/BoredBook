@@ -23,7 +23,11 @@ export const mimeType = (
         for (let i = 0; i < arr.length; i++) {
           header += arr[i].toString(16);
         }
+        console.log(header);
         switch (header) {
+          case '52494646':
+            isValid = true;
+            break;
           case '89504e47':
             isValid = true;
             break;
@@ -32,6 +36,9 @@ export const mimeType = (
           case 'ffd8ffe2':
           case 'ffd8ffe3':
           case 'ffd8ffe8':
+          case 'ffd8ffee':
+          case 'ffd8ffdb':
+          case 'ffd8ffed':
             isValid = true;
             break;
           default:
