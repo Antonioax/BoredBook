@@ -3,6 +3,9 @@ import { BehaviorSubject, map } from 'rxjs';
 import { Post } from '../models/post.model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from "../../environments/environment.development";
+
+const BACKEND_URL = environment.apiUrl + '/posts/';
 
 @Injectable({
   providedIn: 'root',
@@ -21,10 +24,7 @@ export class PostService {
     postData.append('content', newPost.content);
     postData.append('image', image, newPost.title);
     this.http
-      .post<{ message: string; post: Post }>(
-        'http://localhost:3000/api/posts',
-        postData
-      )
+      .post<{ message: string; post: Post }>(BACKEND_URL, postData)
       .subscribe({
         next: (data) => {
           this.router.navigateByUrl('posts');
@@ -37,7 +37,7 @@ export class PostService {
     const queryParams = `?pageSize=${pageSize}&currentPage=${currentPage}`;
     this.http
       .get<{ message: string; posts: any; postCount: number }>(
-        'http://localhost:3000/api/posts' + queryParams
+        BACKEND_URL + queryParams
       )
       .pipe(
         map((data) => {
@@ -69,7 +69,7 @@ export class PostService {
     return new Promise((resolve, reject) => {
       this.http
         .get<{ message: string; posts: any; postCount: number }>(
-          'http://localhost:3000/api/posts' + queryParams
+          BACKEND_URL + queryParams
         )
         .pipe(
           map((data) => {
@@ -107,7 +107,7 @@ export class PostService {
       imagePath: string;
       creatorId: string;
       creatorEmail: string;
-    }>('http://localhost:3000/api/posts/' + id);
+    }>(BACKEND_URL + id);
   }
 
   updatePost(updatedPost: Post, image: string | File) {
@@ -129,17 +129,15 @@ export class PostService {
       };
     }
 
-    return this.http
-      .put('http://localhost:3000/api/posts/' + updatedPost.id, postData)
-      .subscribe({
-        next: (data) => {
-          this.router.navigateByUrl('posts');
-        },
-        error: (err) => this.router.navigateByUrl('posts'),
-      });
+    return this.http.put(BACKEND_URL + updatedPost.id, postData).subscribe({
+      next: (data) => {
+        this.router.navigateByUrl('posts');
+      },
+      error: (err) => this.router.navigateByUrl('posts'),
+    });
   }
 
   deletePost(id: string) {
-    return this.http.delete('http://localhost:3000/api/posts/' + id);
+    return this.http.delete(BACKEND_URL + id);
   }
 }
