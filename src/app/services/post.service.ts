@@ -29,6 +29,7 @@ export class PostService {
         next: (data) => {
           this.router.navigateByUrl('posts');
         },
+        error: (err) => this.router.navigateByUrl('posts'),
       });
   }
 
@@ -104,8 +105,8 @@ export class PostService {
       title: string;
       content: string;
       imagePath: string;
-      creatorId: string,
-      creatorEmail: string
+      creatorId: string;
+      creatorEmail: string;
     }>('http://localhost:3000/api/posts/' + id);
   }
 
@@ -124,16 +125,17 @@ export class PostService {
         content: updatedPost.content,
         imagePath: image,
         creatorId: updatedPost.creatorId,
-        creatorEmail: updatedPost.creatorEmail
+        creatorEmail: updatedPost.creatorEmail,
       };
     }
 
-    this.http
+    return this.http
       .put('http://localhost:3000/api/posts/' + updatedPost.id, postData)
       .subscribe({
         next: (data) => {
           this.router.navigateByUrl('posts');
         },
+        error: (err) => this.router.navigateByUrl('posts'),
       });
   }
 

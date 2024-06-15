@@ -44,7 +44,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     this.authListenerSub = this.authService.getAuthStatusListener().subscribe({
       next: () => (this.isLoading = false),
     });
-    
+
     this.form = new FormGroup({
       title: new FormControl(null, { validators: [Validators.required] }),
       content: new FormControl(null, {
@@ -62,22 +62,25 @@ export class PostCreateComponent implements OnInit, OnDestroy {
         this.postId = paramMap.get('postId');
         this.isLoading = true;
         this.postId &&
-          this.postService.getPost(this.postId).subscribe((data) => {
-            this.post = {
-              id: data._id,
-              title: data.title,
-              content: data.content,
-              imagePath: data.imagePath,
-              creatorId: data.creatorId,
-              creatorEmail: data.creatorEmail,
-            };
-            this.form.setValue({
-              title: this.post.title,
-              content: this.post.content,
-              image: this.post.imagePath,
-            });
-            this.imagePreview = this.post.imagePath;
-            this.isLoading = false;
+          this.postService.getPost(this.postId).subscribe({
+            next: (data) => {
+              this.post = {
+                id: data._id,
+                title: data.title,
+                content: data.content,
+                imagePath: data.imagePath,
+                creatorId: data.creatorId,
+                creatorEmail: data.creatorEmail,
+              };
+              this.form.setValue({
+                title: this.post.title,
+                content: this.post.content,
+                image: this.post.imagePath,
+              });
+              this.imagePreview = this.post.imagePath;
+              this.isLoading = false;
+            },
+            error: (error) => (this.isLoading = false),
           });
       } else {
         this.mode = 'create';
