@@ -51,7 +51,7 @@ exports.loginUser = (req, res, next) => {
           email: fetchedUser.email,
           userId: fetchedUser._id,
         },
-        "secret_this_should_be_longer",
+        process.env.JWT_SECRET_KEY,
         {
           expiresIn: "1h",
         }
