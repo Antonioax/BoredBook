@@ -21,6 +21,8 @@ mongoose
     console.log("Connection failed!");
   });
 
+console.log(__dirname);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: false }));
 app.use("/images", express.static(path.join(__dirname, "images")));

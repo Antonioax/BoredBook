@@ -3,7 +3,7 @@ import { BehaviorSubject, map } from 'rxjs';
 import { Post } from '../models/post.model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { environment } from "../../environments/environment.development";
+import { environment } from '../../environments/environment.development';
 
 const BACKEND_URL = environment.apiUrl + '/posts/';
 
@@ -41,6 +41,7 @@ export class PostService {
       )
       .pipe(
         map((data) => {
+          console.log(data);
           return {
             posts: data.posts.map((post: any) => {
               return {
