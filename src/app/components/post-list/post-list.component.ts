@@ -19,7 +19,7 @@ import { User } from '../../models/user.model';
 export class PostListComponent implements OnInit, OnDestroy {
   allPosts: Post[] = [];
   totalPosts = 0;
-  pagePosts = 2;
+  pagePosts = 10;
   currentPage = 1;
   pageOptions = [1, 2, 5, 10, 20];
 

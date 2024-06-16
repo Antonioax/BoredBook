@@ -47,7 +47,7 @@ export class AuthService {
     return this.http.post(BACKEND_URL + 'signup', authData).subscribe({
       next: (data) => {
         console.log(data);
-        this.router.navigate(['/']);
+        this.router.navigate(['/login']);
       },
       error: (error) => {
         console.log(error);
