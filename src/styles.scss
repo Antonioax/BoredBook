@@ -16,7 +16,7 @@
   height: 48px;
   display: inline-block;
   position: relative;
-  background: rgb(217, 119, 6);
+  background: #0f172a;
   box-sizing: border-box;
   animation: zeroRotation 0.5s ease infinite alternate-reverse;
 }
@@ -42,5 +42,5 @@ textarea.ng-invalid.ng-touched {
   box-shadow: inset 0 0 0 1px rgb(255, 0, 0);
 }
     
-html, body { height: 100%; overscroll-behavior: none; background-color: rgb(69, 26, 3); }
+html, body { height: 100%; overscroll-behavior: none; background-color: rgb(71, 85, 105); }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
