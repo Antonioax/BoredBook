@@ -1,5 +1,5 @@
 export const environment = {
-  apiUrl: 'http://boredbook.eu-north-1.elasticbeanstalk.com/api',
+  apiUrl: 'http://boredbook.net/api',
 };
 
 // http://boredbook.eu-north-1.elasticbeanstalk.com/api
