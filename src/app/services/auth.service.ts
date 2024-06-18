@@ -134,6 +134,7 @@ export class AuthService {
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
     clearTimeout(this.tokenTimer);
+    this.clearLocalAuth();
     this.router.navigate(['/']);
   }
 
