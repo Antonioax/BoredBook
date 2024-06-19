@@ -1,18 +1,44 @@
 <div
-  class="flex flex-col sm:flex-row justify-center items-center gap-3 my-36 text-white"
+  class="grid place-items-center items-center sm:grid-cols-2 gap-10 my-36 text-white"
 >
-  <div class="bg-blue-200 w-52 h-52 rounded-full"></div>
-  <div class="max-sm:mt-10 sm:ml-10 text-center">
-    <div class="text-2xl font-medium mb-2">{{ user.email }}</div>
+  <div class="text-center sm:justify-self-end flex flex-col">
+    @if (user.imagePath) {
+    <img
+      [src]="user.imagePath"
+      class="bg-white w-52 h-52 rounded-full sm:justify-self-end"
+      alt="Profile picture"
+    />
+    } @else {
+    <img
+      src="assets/images/profilePlaceholder.png"
+      class="bg-white w-52 h-52 rounded-full sm:justify-self-end"
+      alt="Profile picture"
+    />
+    }
+
+    <form (ngSubmit)="onSetPhoto(photoForm)" #photoForm="ngForm">
+      <div class="flex flex-col items-center">
+        <button
+          type="submit"
+          class="py-1 px-5 bg-slate-900 text-white rounded-lg shadow-lg w-min whitespace-nowrap mt-4"
+          [disabled]="photoForm.invalid"
+        >
+          Choose Photo
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="text-center sm:justify-self-start w-[250px]">
+    <div class="max-sm:mt-7 text-2xl font-medium mb-2">{{ user.email }}</div>
     @if (user.username) {
     <div>{{ user.username }}</div>
     } @else {
     <div>Choose a unique username</div>
     <form (ngSubmit)="onSetUsername(usernameForm)" #usernameForm="ngForm">
-      <div class="flex flex-col">
+      <div class="flex flex-col items-center">
         <input
           type="text"
-          class="rounded-lg shadow-md resize-none p-3 py-2 text-center"
+          class="rounded-lg shadow-md resize-none text-center text-black py-1 mt-2 mb-2 w-full"
           name="username"
           placeholder="MyCoolUsername123"
           required
@@ -20,7 +46,7 @@
         />
         <button
           type="submit"
-          class="py-2 px-5 bg-slate-900 text-white rounded-lg shadow-lg"
+          class="py-1 px-5 bg-slate-900 text-white rounded-lg shadow-lg w-min"
           [disabled]="usernameForm.invalid"
         >
           Save

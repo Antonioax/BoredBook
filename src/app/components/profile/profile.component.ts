@@ -21,4 +21,8 @@ export class ProfileComponent implements OnInit {
   onSetUsername(form: NgForm) {
     console.log(form.value.username);
   }
+
+  onSetPhoto(form: NgForm) {
+    console.log(form.value.username);
+  }
 }
