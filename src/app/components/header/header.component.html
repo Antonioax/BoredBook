@@ -1,5 +1,5 @@
 <div
-  class="h-12 bg-slate-900 bg-opacity-50 shadow-lg flex items-center justify-between px-3 text-slate-400 fixed w-full"
+  class="max-sm:hidden h-12 bg-slate-900 bg-opacity-50 shadow-lg flex items-center justify-between px-3 text-slate-400 fixed w-full"
 >
   <div class="flex gap-3">
     <a routerLink="/posts" routerLinkActive="active-link">Posts</a>
@@ -18,3 +18,46 @@
     <a routerLink="/" class="font-semibold">BoredBook</a>
   </div>
 </div>
+
+@if(isMenu) {
+<div class="sm:hidden h-screen w-screen fixed z-10" (click)="isMenu = false">
+  <div
+    class="sm:hidden h-screen min-w-[50vw] bg-slate-900 bg-opacity-80 shadow-lg flex flex-col items-center py-3 text-slate-400 fixed"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="flex flex-col gap-3 items-center py-6 border-b border-white w-[80%]">
+      <a routerLink="/posts" routerLinkActive="active-link" >Posts</a>
+      @if (isAuthenticated) {
+      <a routerLink="/create" routerLinkActive="active-link">New Post</a>
+      <a routerLink="/profile" routerLinkActive="active-link">Profile</a>
+      }
+    </div>
+    <div class="flex flex-col gap-3 items-center py-6">
+      @if (!isAuthenticated) {
+      <a routerLink="/signup" routerLinkActive="active-link">Register</a>
+      <a routerLink="/login" routerLinkActive="active-link">Login</a>
+      } @if (isAuthenticated) {
+      <button (click)="onLogout()">Logout</button>
+      }
+      <a routerLink="/" class="font-semibold">BoredBook</a>
+    </div>
+  </div>
+</div>
+} @else {
+<div class="sm:hidden fixed top-4 left-4" (click)="isMenu = !isMenu">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="white"
+    class="size-8"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+    />
+  </svg>
+</div>
+}
