@@ -8,6 +8,12 @@
       class="bg-white w-52 h-52 rounded-full sm:justify-self-end"
       alt="Profile picture"
     />
+    } @else if (imagePreview) {
+    <img
+      [src]="imagePreview"
+      class="bg-white w-52 h-52 rounded-full sm:justify-self-end"
+      alt="Profile picture"
+    />
     } @else {
     <img
       src="assets/images/profilePlaceholder.png"
@@ -16,15 +22,30 @@
     />
     }
 
-    <form (ngSubmit)="onSetPhoto(photoForm)" #photoForm="ngForm">
+    <form (ngSubmit)="onSetPhoto()" [formGroup]="imageForm">
+      <input
+        type="file"
+        class="hidden"
+        #filePicker
+        (change)="onImagePicked($event)"
+      />
       <div class="flex flex-col items-center">
         <button
-          type="submit"
+          type="button"
           class="py-1 px-5 bg-slate-900 text-white rounded-lg shadow-lg w-min whitespace-nowrap mt-4"
-          [disabled]="photoForm.invalid"
+          (click)="filePicker.click()"
         >
           Choose Photo
         </button>
+        @if (imagePreview) {
+        <button
+          type="submit"
+          class="py-1 px-5 bg-slate-900 text-white rounded-lg shadow-lg w-min whitespace-nowrap mt-2"
+          [disabled]="imageForm.invalid"
+        >
+          Save Photo
+        </button>
+        }
       </div>
     </form>
   </div>
