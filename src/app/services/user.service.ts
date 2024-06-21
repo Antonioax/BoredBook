@@ -27,11 +27,27 @@ export class UserService {
 
     console.log(newUser);
 
-    this.http.put(BACKEND_URL + newUser.id, newUser).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (err) => console.log(err),
-    });
+    this.http
+      .put<{
+        message: String;
+        data: {
+          _id: string;
+          email: string;
+          username?: string;
+          imagePath?: string;
+        };
+      }>(BACKEND_URL + newUser.id, newUser)
+      .subscribe({
+        next: (data) => {
+          let updatedUser: User = {
+            id: data.data._id,
+            email: data.data.email,
+            username: data.data.username,
+            imagePath: data.data.imagePath,
+          };
+          this.authService.updateUser(updatedUser);
+        },
+        error: (err) => console.log(err),
+      });
   }
 }

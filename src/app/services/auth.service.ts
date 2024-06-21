@@ -20,11 +20,17 @@ export class AuthService {
     id: '',
     email: '',
   };
+  public userSubject = new Subject<User>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
   getUser() {
     return this.user;
+  }
+
+  updateUser(user: User) {
+    this.user = user;
+    this.userSubject.next(user);
   }
 
   getToken() {
@@ -83,6 +89,7 @@ export class AuthService {
               imagePath: data.userProfilePhoto,
             };
             this.user = newUser;
+            this.userSubject.next(this.user);
             this.isAuthenticated = true;
             this.authStatusListener.next(true);
             this.setAuthTimer(data.expiresIn);
@@ -108,6 +115,7 @@ export class AuthService {
       const expiresIn = auth.expirationDate.getTime() - now.getTime();
       if (expiresIn > 0) {
         this.user = auth.user;
+        this.userSubject.next(this.user);
         this.token = auth.token;
         this.isAuthenticated = true;
         this.setAuthTimer(expiresIn / 1000);

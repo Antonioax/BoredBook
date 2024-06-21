@@ -11,6 +11,7 @@ import {
 } from '@angular/forms';
 import { mimeType } from '../../validators/mime-type.validator';
 import { UserService } from '../../services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -21,6 +22,7 @@ import { UserService } from '../../services/user.service';
 export class ProfileComponent implements OnInit {
   isOwner = true;
   user!: User;
+  userSub!: Subscription;
 
   imageForm!: FormGroup;
   imagePreview!: string;
@@ -32,6 +34,10 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.authService.getUser();
+    
+    this.userSub = this.authService.userSubject.subscribe({
+      next: (user) => (this.user = user),
+    });
 
     this.imageForm = new FormGroup({
       image: new FormControl(null, {
