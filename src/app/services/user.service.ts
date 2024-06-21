@@ -17,6 +17,41 @@ export class UserService {
     private router: Router
   ) {}
 
+  updateProfilePhoto(image: File) {
+    console.log(this.authService.getUser().username);
+    console.log(this.authService.userSubject);
+    let userData = new FormData();
+    userData.append('id', this.authService.getUser().id);
+    userData.append('email', this.authService.getUser().email);
+    userData.append('username', this.authService.getUser().username || '');
+    userData.append('image', image, this.authService.getUser().email);
+
+    this.http
+      .put<{
+        message: String;
+        data: {
+          _id: string;
+          email: string;
+          username?: string;
+          imagePath?: string;
+        };
+      }>(BACKEND_URL + this.authService.getUser().id, userData)
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          let updatedUser: User = {
+            id: data.data._id,
+            email: data.data.email,
+            username: data.data.username,
+            imagePath: data.data.imagePath,
+          };
+          this.authService.updateUser(updatedUser);
+          this.router.navigate(['/profile']);
+        },
+        error: (err) => console.log(err),
+      });
+  }
+
   updateUsername(username: string) {
     let newUser: User = {
       id: this.authService.getUser().id,
@@ -24,8 +59,6 @@ export class UserService {
       username: username,
       imagePath: this.authService.getUser().imagePath,
     };
-
-    console.log(newUser);
 
     this.http
       .put<{

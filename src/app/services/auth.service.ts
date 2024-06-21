@@ -29,6 +29,7 @@ export class AuthService {
   }
 
   updateUser(user: User) {
+    console.log(user);
     this.user = user;
     this.userSubject.next(user);
   }

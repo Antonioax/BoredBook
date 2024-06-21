@@ -77,7 +77,9 @@ exports.loginUser = (req, res, next) => {
 
 exports.updateUser = (req, res, next) => {
   let imagePath = req.body.imagePath;
+  console.log("Received request:", req.body);
   if (req.file) {
+    console.log("It is a file!");
     const url = req.protocol + "://" + req.get("host");
     imagePath = url + "/images/" + req.file.filename;
   }
@@ -85,7 +87,7 @@ exports.updateUser = (req, res, next) => {
     _id: req.body.id,
     email: req.body.email,
     username: req.body.username,
-    imagePath: req.body.imagePath,
+    imagePath: imagePath,
   });
   console.log(user);
   User.updateOne({ _id: req.params.id }, user)

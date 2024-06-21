@@ -34,7 +34,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.authService.getUser();
-    
+
     this.userSub = this.authService.userSubject.subscribe({
       next: (user) => (this.user = user),
     });
@@ -51,7 +51,9 @@ export class ProfileComponent implements OnInit {
     this.userService.updateUsername(form.value.username);
   }
 
-  onSetPhoto() {}
+  onSetPhoto() {
+    this.userService.updateProfilePhoto(this.imageForm.value.image);
+  }
 
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
