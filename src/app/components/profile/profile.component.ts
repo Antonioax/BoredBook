@@ -21,6 +21,8 @@ import { Subscription } from 'rxjs';
 })
 export class ProfileComponent implements OnInit {
   isOwner = true;
+  isEditUsername = false;
+  isEditPhoto = false;
   user!: User;
   userSub!: Subscription;
 
@@ -36,7 +38,15 @@ export class ProfileComponent implements OnInit {
     this.user = this.authService.getUser();
 
     this.userSub = this.authService.userSubject.subscribe({
-      next: (user) => (this.user = user),
+      next: (user) => {
+        this.user = user;
+        this.isEditUsername = false;
+        this.imagePreview = '';
+      },
+      error: (err) => {
+        this.isEditUsername = false;
+        this.imagePreview = '';
+      },
     });
 
     this.imageForm = new FormGroup({
@@ -48,11 +58,11 @@ export class ProfileComponent implements OnInit {
   }
 
   onSetUsername(form: NgForm) {
-    this.userService.updateUsername(form.value.username);
+    this.userService.updateUser(form.value.username, this.user.imagePath);
   }
 
   onSetPhoto() {
-    this.userService.updateProfilePhoto(this.imageForm.value.image);
+    this.userService.updateUser(this.user.username, this.imageForm.value.image);
   }
 
   onImagePicked(event: Event) {

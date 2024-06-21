@@ -17,14 +17,23 @@ export class UserService {
     private router: Router
   ) {}
 
-  updateProfilePhoto(image: File) {
-    console.log(this.authService.getUser().username);
-    console.log(this.authService.userSubject);
-    let userData = new FormData();
-    userData.append('id', this.authService.getUser().id);
-    userData.append('email', this.authService.getUser().email);
-    userData.append('username', this.authService.getUser().username || '');
-    userData.append('image', image, this.authService.getUser().email);
+  updateUser(username: string | undefined, image: File | string | undefined) {
+    let userData: User | FormData;
+
+    if (typeof image === 'object') {
+      userData = new FormData();
+      userData.append('id', this.authService.getUser().id);
+      userData.append('email', this.authService.getUser().email);
+      userData.append('username', this.authService.getUser().username || '');
+      userData.append('image', image, this.authService.getUser().email);
+    } else {
+      userData = {
+        id: this.authService.getUser().id,
+        email: this.authService.getUser().email,
+        username: username,
+        imagePath: this.authService.getUser().imagePath,
+      };
+    }
 
     this.http
       .put<{
@@ -47,38 +56,6 @@ export class UserService {
           };
           this.authService.updateUser(updatedUser);
           this.router.navigate(['/profile']);
-        },
-        error: (err) => console.log(err),
-      });
-  }
-
-  updateUsername(username: string) {
-    let newUser: User = {
-      id: this.authService.getUser().id,
-      email: this.authService.getUser().email,
-      username: username,
-      imagePath: this.authService.getUser().imagePath,
-    };
-
-    this.http
-      .put<{
-        message: String;
-        data: {
-          _id: string;
-          email: string;
-          username?: string;
-          imagePath?: string;
-        };
-      }>(BACKEND_URL + newUser.id, newUser)
-      .subscribe({
-        next: (data) => {
-          let updatedUser: User = {
-            id: data.data._id,
-            email: data.data.email,
-            username: data.data.username,
-            imagePath: data.data.imagePath,
-          };
-          this.authService.updateUser(updatedUser);
         },
         error: (err) => console.log(err),
       });
