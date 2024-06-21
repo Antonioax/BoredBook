@@ -90,12 +90,7 @@ export class AuthService {
             const expirationDate = new Date(
               now.getTime() + data.expiresIn * 1000
             );
-            this.saveLocalAuth(
-              this.token,
-              expirationDate,
-              this.user.id,
-              this.user.email
-            );
+            this.saveLocalAuth(this.token, expirationDate, this.user);
             this.router.navigate(['/']);
           }
         },
@@ -112,13 +107,7 @@ export class AuthService {
       const now = new Date();
       const expiresIn = auth.expirationDate.getTime() - now.getTime();
       if (expiresIn > 0) {
-        if (auth.userId && auth.userEmail) {
-          let newUser: User = {
-            id: auth.userId,
-            email: auth.userEmail,
-          };
-          this.user = newUser;
-        }
+        this.user = auth.user;
         this.token = auth.token;
         this.isAuthenticated = true;
         this.setAuthTimer(expiresIn / 1000);
@@ -149,37 +138,35 @@ export class AuthService {
     }, duration * 1000);
   }
 
-  private saveLocalAuth(
-    token: string,
-    expirationDate: Date,
-    userId: string,
-    userEmail: string
-  ) {
+  private saveLocalAuth(token: string, expirationDate: Date, user: User) {
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
-    localStorage.setItem('userId', userId);
-    localStorage.setItem('userEmail', userEmail);
+    localStorage.setItem('user', JSON.stringify(user));
   }
 
   private getLocalAuth() {
     const token = localStorage.getItem('token');
     const expirationDate = localStorage.getItem('expiration');
-    const userId = localStorage.getItem('userId');
-    const userEmail = localStorage.getItem('userEmail');
+    const userJson = localStorage.getItem('user');
 
     if (!token || !expirationDate) return;
+    let user;
+    if (userJson) {
+      user = JSON.parse(userJson);
+    }
+
+    console.log(user);
+
     return {
       token: token,
       expirationDate: new Date(expirationDate),
-      userId: userId,
-      userEmail: userEmail,
+      user: user,
     };
   }
 
   private clearLocalAuth() {
     localStorage.removeItem('token');
     localStorage.removeItem('expiration');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('userEmail');
+    localStorage.removeItem('user');
   }
 }

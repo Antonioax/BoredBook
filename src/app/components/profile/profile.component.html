@@ -52,7 +52,7 @@
   <div class="text-center sm:justify-self-start w-[250px]">
     <div class="max-sm:mt-7 text-2xl font-medium mb-2">{{ user.email }}</div>
     @if (user.username) {
-    <div>{{ user.username }}</div>
+    <div>✨ {{ user.username }} ✨</div>
     } @else {
     <div>Choose a unique username</div>
     <form (ngSubmit)="onSetUsername(usernameForm)" #usernameForm="ngForm">

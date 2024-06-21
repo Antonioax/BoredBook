@@ -25,8 +25,12 @@ export class UserService {
       imagePath: this.authService.getUser().imagePath,
     };
 
+    console.log(newUser);
+
     this.http.put(BACKEND_URL + newUser.id, newUser).subscribe({
-      next: (data) => console.log(data),
+      next: (data) => {
+        console.log(data);
+      },
       error: (err) => console.log(err),
     });
   }
