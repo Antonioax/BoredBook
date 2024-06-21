@@ -2,15 +2,15 @@
   class="grid place-items-center items-center sm:grid-cols-2 gap-10 my-36 text-white"
 >
   <div class="text-center sm:justify-self-end flex flex-col">
-    @if (user.imagePath) {
+    @if (imagePreview) {
     <img
-      [src]="user.imagePath"
+      [src]="imagePreview"
       class="bg-white w-52 h-52 rounded-full sm:justify-self-end"
       alt="Profile picture"
     />
-    } @else if (imagePreview) {
+    } @else if (user.imagePath) {
     <img
-      [src]="imagePreview"
+      [src]="user.imagePath"
       class="bg-white w-52 h-52 rounded-full sm:justify-self-end"
       alt="Profile picture"
     />
