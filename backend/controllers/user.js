@@ -77,36 +77,44 @@ exports.loginUser = (req, res, next) => {
 
 exports.updateUser = (req, res, next) => {
   let imagePath = req.body.imagePath;
-  console.log("Received request:", req.body);
   if (req.file) {
-    console.log("It is a file!");
     const url = req.protocol + "://" + req.get("host");
     imagePath = url + "/images/" + req.file.filename;
   }
-  const user = new User({
-    _id: req.body.id,
-    email: req.body.email,
-    username: req.body.username,
-    imagePath: imagePath,
-  });
-  console.log(user);
-  User.updateOne({ _id: req.params.id }, user)
-    .then((result) => {
-      console.log(result);
-      if (result.matchedCount > 0) {
-        res.status(200).json({
-          message: "User updated succesfully!",
-          data: user,
-        });
-      } else {
-        res.status(401).json({
-          message: "Couldn't find user!",
-        });
-      }
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: error,
+
+  User.findOne({ username: req.body.username }).then(existingUser => {
+    if(existingUser) {
+      return res.status(400).json({
+        message: "Username already exists!",
       });
+    }
+
+    const user = new User({
+      _id: req.body.id,
+      email: req.body.email,
+      username: req.body.username,
+      imagePath: imagePath,
     });
+
+    User.updateOne({ _id: req.params.id }, user)
+      .then((result) => {
+        console.log(result);
+        if (result.matchedCount > 0) {
+          res.status(200).json({
+            message: "User updated succesfully!",
+            data: user,
+          });
+        } else {
+          res.status(401).json({
+            message: "Couldn't find user!",
+          });
+        }
+      })
+      .catch((error) => {
+        res.status(500).json({
+          message: error,
+        });
+      });
+  });
+  
 };
