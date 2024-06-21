@@ -1,5 +1,5 @@
 export const environment = {
-  apiUrl: 'http://boredbook.net/api',
+  apiUrl: 'http://localhost:3000/api',
 };
 
 // http://boredbook.net/api

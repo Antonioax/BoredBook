@@ -62,6 +62,8 @@ exports.loginUser = (req, res, next) => {
         expiresIn: 3600,
         userId: fetchedUser._id,
         userEmail: fetchedUser.email,
+        userName: fetchedUser.username,
+        userProfilePhoto: fetchedUser.imagePath,
       });
     })
     .catch((err) => {
@@ -70,5 +72,39 @@ exports.loginUser = (req, res, next) => {
           .status(500)
           .json({ message: "Invalid authentication credentials!" });
       }
+    });
+};
+
+exports.updateUser = (req, res, next) => {
+  let imagePath = req.body.imagePath;
+  if (req.file) {
+    const url = req.protocol + "://" + req.get("host");
+    imagePath = url + "/images/" + req.file.filename;
+  }
+  const user = new User({
+    _id: req.body.id,
+    email: req.body.email,
+    username: req.body.username,
+    imagePath: req.body.imagePath,
+  });
+  console.log(user);
+  User.updateOne({ _id: req.params.id }, user)
+    .then((result) => {
+      console.log(result);
+      if (result.matchedCount > 0) {
+        res.status(200).json({
+          message: "User updated succesfully!",
+          data: user,
+        });
+      } else {
+        res.status(401).json({
+          message: "Couldn't find user!",
+        });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: error,
+      });
     });
 };

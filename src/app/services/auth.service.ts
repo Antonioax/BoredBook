@@ -68,6 +68,8 @@ export class AuthService {
         expiresIn: number;
         userId: string;
         userEmail: string;
+        userName: string;
+        userProfilePhoto: string;
       }>(BACKEND_URL + 'login', authData)
       .subscribe({
         next: (data) => {
@@ -77,6 +79,8 @@ export class AuthService {
             let newUser: User = {
               id: data.userId,
               email: data.userEmail,
+              username: data.userName,
+              imagePath: data.userProfilePhoto,
             };
             this.user = newUser;
             this.isAuthenticated = true;

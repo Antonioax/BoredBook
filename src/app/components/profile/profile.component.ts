@@ -1,8 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.model';
-import { FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
-import { mimeType } from "../../validators/mime-type.validator";
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  NgForm,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { mimeType } from '../../validators/mime-type.validator';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -17,7 +25,10 @@ export class ProfileComponent implements OnInit {
   imageForm!: FormGroup;
   imagePreview!: string;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
     this.user = this.authService.getUser();
@@ -31,12 +42,10 @@ export class ProfileComponent implements OnInit {
   }
 
   onSetUsername(form: NgForm) {
-    console.log(form.value.username);
+    this.userService.updateUsername(form.value.username);
   }
 
-  onSetPhoto() {
-    
-  }
+  onSetPhoto() {}
 
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
