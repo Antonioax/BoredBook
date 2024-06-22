@@ -35,6 +35,8 @@ export class UserService {
       };
     }
 
+    console.log(this.authService.getUser().id);
+
     this.http
       .put<{
         message: String;

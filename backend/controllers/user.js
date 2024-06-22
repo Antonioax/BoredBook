@@ -1,5 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const path = require("path");
 
 const User = require("../models/user");
 
@@ -76,45 +78,70 @@ exports.loginUser = (req, res, next) => {
 };
 
 exports.updateUser = (req, res, next) => {
-  let imagePath = req.body.imagePath;
+  let newImagePath = req.body.imagePath;
+  let oldImagePath;
+
   if (req.file) {
     const url = req.protocol + "://" + req.get("host");
-    imagePath = url + "/images/" + req.file.filename;
+    newImagePath = url + "/images/" + req.file.filename;
   }
 
-  User.findOne({ username: req.body.username }).then(existingUser => {
-    if(existingUser) {
-      return res.status(400).json({
-        message: "Username already exists!",
-      });
+  console.log(req.body);
+
+  User.findById(req.body.id).then((user) => {
+    if (!user) {
+      return res.status(404).json({ message: "User not found!" });
     }
 
-    const user = new User({
+    if (req.file && user.imagePath) {
+      oldImagePath = path.join(
+        __dirname,
+        "..",
+        "images",
+        path.basename(user.imagePath)
+      );
+    }
+
+    const updatedUser = new User({
       _id: req.body.id,
       email: req.body.email,
       username: req.body.username,
-      imagePath: imagePath,
+      imagePath: newImagePath || user.imagePath,
     });
 
-    User.updateOne({ _id: req.params.id }, user)
-      .then((result) => {
-        console.log(result);
-        if (result.matchedCount > 0) {
-          res.status(200).json({
-            message: "User updated succesfully!",
-            data: user,
-          });
-        } else {
-          res.status(401).json({
-            message: "Couldn't find user!",
-          });
-        }
-      })
-      .catch((error) => {
-        res.status(500).json({
-          message: error,
+    User.findOne({ username: req.body.username }).then((existingUser) => {
+      if (existingUser && existingUser._id.toString() !== req.params.id) {
+        return res.status(400).json({
+          message: "Username already exists!",
         });
-      });
+      }
+
+      User.updateOne({ _id: req.params.id }, updatedUser)
+        .then((result) => {
+          console.log(result);
+          if (result.matchedCount > 0) {
+            if (oldImagePath) {
+              fs.unlink(oldImagePath, (err) => {
+                if (err) {
+                  console.error("Failed to delete old image:", err);
+                }
+              });
+            }
+            res.status(200).json({
+              message: "User updated succesfully!",
+              data: updatedUser,
+            });
+          } else {
+            res.status(401).json({
+              message: "Couldn't find user!",
+            });
+          }
+        })
+        .catch((error) => {
+          res.status(500).json({
+            message: error,
+          });
+        });
+    });
   });
-  
 };
