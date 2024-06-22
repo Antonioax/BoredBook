@@ -1,3 +1,6 @@
+const fs = require("fs");
+const path = require("path");
+
 const Post = require("../models/post");
 
 exports.createPost = (req, res, next) => {
@@ -32,10 +35,13 @@ exports.createPost = (req, res, next) => {
 
 exports.updatePost = (req, res, next) => {
   let imagePath = req.body.imagePath;
+  let oldImagePath;
+
   if (req.file) {
     const url = req.protocol + "://" + req.get("host");
     imagePath = url + "/images/" + req.file.filename;
   }
+
   const post = new Post({
     _id: req.body.id,
     title: req.body.title,
@@ -111,26 +117,40 @@ exports.getPost = (req, res, next) => {
 };
 
 exports.deletePost = (req, res, next) => {
-  console.log(req.params.id);
-  Post.deleteOne({
-    _id: req.params.id,
-    creatorId: req.userData.userId,
-  })
-    .then((result) => {
-      console.log(result);
-      if (result.deletedCount > 0) {
-        res.status(200).json({
-          message: "Post deleted succesfully!",
-        });
-      } else {
-        res.status(401).json({
-          message: "You are not authorized!",
+  Post.findById(req.params.id)
+    .then((post) => {
+      if (!post) {
+        return res.status(404).json({
+          message: "Post not found!",
         });
       }
+
+      return Post.deleteOne({
+        _id: req.params.id,
+        creatorId: req.userData.userId,
+      }).then((result) => {
+        console.log(result);
+        if (result.deletedCount > 0) {
+          
+          const imagePath = path.join(
+            __dirname,
+            "..",
+            "images",
+            path.basename(post.imagePath)
+          );
+          fs.unlink(imagePath, (err) => {
+            if (err) {
+              console.error("Failed to delete image:", err);
+            }
+          });
+
+          res.status(200).json({ message: "Post deleted successfully!" });
+        } else {
+          res.status(401).json({ message: "You are not authorized!" });
+        }
+      });
     })
     .catch((error) => {
-      res.status(500).json({
-        message: "Post delete failed!",
-      });
+      res.status(500).json({ message: "Post delete failed!" });
     });
 };
