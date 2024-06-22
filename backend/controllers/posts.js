@@ -34,41 +34,62 @@ exports.createPost = (req, res, next) => {
 };
 
 exports.updatePost = (req, res, next) => {
-  let imagePath = req.body.imagePath;
-  let oldImagePath;
+  try {
+    let newImagePath;
+    let oldImagePath;
 
-  if (req.file) {
-    const url = req.protocol + "://" + req.get("host");
-    imagePath = url + "/images/" + req.file.filename;
-  }
+    if (req.file) {
+      const url = req.protocol + "://" + req.get("host");
+      newImagePath = url + "/images/" + req.file.filename;
+    }
 
-  const post = new Post({
-    _id: req.body.id,
-    title: req.body.title,
-    content: req.body.content,
-    imagePath: imagePath,
-    creatorId: req.userData.userId,
-    creatorEmail: req.userData.email,
-  });
-  console.log(post);
-  Post.updateOne({ _id: req.params.id, creatorId: req.userData.userId }, post)
-    .then((result) => {
-      console.log(result);
-      if (result.matchedCount > 0) {
-        res.status(200).json({
-          message: "Post updated succesfully!",
-        });
-      } else {
-        res.status(401).json({
-          message: "You are not authorized!",
-        });
+    Post.findById(req.params.id).then((post) => {
+      if (!post) {
+        return res.status(404).json({ message: "Post not found!" });
       }
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: "Post update failed!",
+
+      if (post.creatorId.toString() !== req.userData.userId.toString()) {
+        return res.status(401).json({ message: "You are not authorized!" });
+      }
+
+      if (req.file) {
+        oldImagePath = path.join(
+          __dirname,
+          "..",
+          "images",
+          path.basename(post.imagePath)
+        );
+      }
+
+      const updatedPost = {
+        title: req.body.title,
+        content: req.body.content,
+        imagePath: newImagePath || post.imagePath,
+        creatorId: req.userData.userId,
+        creatorEmail: req.userData.email,
+      };
+
+      Post.updateOne(
+        { _id: req.params.id, creatorId: req.userData.userId },
+        updatedPost
+      ).then((result) => {
+        if (result.matchedCount > 0) {
+          if (oldImagePath) {
+            fs.unlink(oldImagePath, (err) => {
+              if (err) {
+                console.error("Failed to delete old image:", err);
+              }
+            });
+          }
+          res.status(200).json({ message: "Post updated successfully!" });
+        } else {
+          res.status(401).json({ message: "You are not authorized!" });
+        }
       });
     });
+  } catch (error) {
+    res.status(500).json({ message: "Post update failed!" });
+  }
 };
 
 exports.getPosts = (req, res, next) => {
@@ -131,7 +152,6 @@ exports.deletePost = (req, res, next) => {
       }).then((result) => {
         console.log(result);
         if (result.deletedCount > 0) {
-          
           const imagePath = path.join(
             __dirname,
             "..",
