@@ -9,12 +9,13 @@ import {
 } from '../pagination/pagination.component';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.model';
+import { LoaderComponent } from '../shared/loader/loader.component';
 
 @Component({
   selector: 'app-post-list',
   templateUrl: './post-list.component.html',
   standalone: true,
-  imports: [PaginationComponent],
+  imports: [PaginationComponent, LoaderComponent],
 })
 export class PostListComponent implements OnInit, OnDestroy {
   allPosts: Post[] = [];

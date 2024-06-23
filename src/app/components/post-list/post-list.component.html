@@ -74,9 +74,7 @@
 @if (!isLoading && allPosts.length < 1) {
 <div class="mt-36 text-center text-white">* No posts added *</div>
 } } @else {
-<div class="flex justify-center items-center w-screen h-[60vh]">
-  <span class="loader"></span>
-</div>
+<app-loader></app-loader>
 } @if (allPosts.length > 0) {
 <app-pagination
   [length]="totalPosts"
