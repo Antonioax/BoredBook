@@ -15,7 +15,7 @@
         formControlName="title"
       />
       <button
-        class="text-xs py-2 px-[10px] bg-slate-900 text-white rounded-lg shadow-lg"
+        class="text-xs py-2 px-[10px] bg-main text-white rounded-lg shadow-lg"
         type="button"
         (click)="filePicker.click()"
       >
@@ -44,7 +44,7 @@
     ></textarea
     ><button
       type="submit"
-      class="py-2 px-3 bg-slate-900 text-white rounded-lg shadow-lg"
+      class="py-2 px-3 bg-main text-white rounded-lg shadow-lg"
       [disabled]="form.invalid"
     >
       {{ mode == "create" ? "Save Post" : "Edit Post" }}

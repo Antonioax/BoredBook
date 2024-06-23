@@ -32,7 +32,7 @@
       <div class="flex flex-col items-center">
         <button
           type="button"
-          class="py-1 px-5 bg-slate-900 text-white rounded-lg shadow-lg w-min whitespace-nowrap mt-4"
+          class="py-1 px-5 bg-main text-white rounded-lg shadow-lg w-min whitespace-nowrap mt-4"
           (click)="filePicker.click()"
         >
           Change Photo
@@ -40,7 +40,7 @@
         @if (imagePreview) {
         <button
           type="submit"
-          class="py-1 px-5 bg-slate-900 text-white rounded-lg shadow-lg w-min whitespace-nowrap mt-2"
+          class="py-1 px-5 bg-main text-white rounded-lg shadow-lg w-min whitespace-nowrap mt-2"
           [disabled]="imageForm.invalid"
         >
           Save Photo
@@ -55,7 +55,7 @@
     <div>✨ {{ user.username }} ✨</div>
     <button
       type="button"
-      class="py-1 px-5 bg-slate-900 text-white rounded-lg shadow-lg w-min mt-2 whitespace-nowrap"
+      class="py-1 px-5 bg-main text-white rounded-lg shadow-lg w-min mt-2 whitespace-nowrap"
       (click)="isEditUsername = true"
     >
       Change username
@@ -74,14 +74,14 @@
         />
         <button
           type="submit"
-          class="py-1 px-5 bg-slate-900 text-white rounded-lg shadow-lg w-min"
+          class="py-1 px-5 bg-main text-white rounded-lg shadow-lg w-min"
           [disabled]="usernameForm.invalid"
         >
           Save
         </button>
         <button
           type="button"
-          class="py-1 px-5 bg-slate-900 text-white rounded-lg shadow-lg w-min mt-1"
+          class="py-1 px-5 bg-main text-white rounded-lg shadow-lg w-min mt-1"
           (click)="isEditUsername = false"
         >
           Cancel

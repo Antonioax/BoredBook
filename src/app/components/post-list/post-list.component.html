@@ -4,7 +4,7 @@
 >
   @if(allPosts.length > 0 && !isLoading){ @for(post of allPosts; track $index){
   <div class="flex flex-col items-center my-3 w-[100vw] max-w-[450px]">
-    <div class="text-white bg-slate-900 bg-opacity-40 text-center w-[90%] rounded-t-lg font-medium relative py-2">
+    <div class="text-white bg-main bg-opacity-40 text-center w-[90%] rounded-t-lg font-medium relative py-2">
       {{ post.title }}
       @if (isAuthenticated && user.id === post.creatorId) {
       <div class="absolute right-2 top-2">
@@ -63,7 +63,7 @@
     </div>
     <div class="w-[90%] flex justify-between mt-2 ml-8">
       <div
-        class="bg-slate-900 bg-opacity-50 text-white p-3 py-2 w-max rounded-lg shadow-lg text-xs h-min"
+        class="bg-main bg-opacity-50 text-white p-3 py-2 w-max rounded-lg shadow-lg text-xs h-min"
       >
         {{ post.creatorEmail }}
       </div>
