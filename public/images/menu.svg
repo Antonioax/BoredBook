@@ -4,7 +4,8 @@
   viewBox="0 0 24 24"
   stroke-width="1.5"
   stroke="white"
-  class="size-8"
+  width="32"
+  height="32"
 >
   <path
     stroke-linecap="round"
