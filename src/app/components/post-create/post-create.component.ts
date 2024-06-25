@@ -14,13 +14,13 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { mimeType } from '../../validators/mime-type.validator';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { LoaderComponent } from '../shared/loader/loader.component';
 
 @Component({
   selector: 'app-post-create',
   templateUrl: './post-create.component.html',
-  styleUrl: './post-create.component.scss',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, LoaderComponent],
 })
 export class PostCreateComponent implements OnInit, OnDestroy {
   mode = 'create';

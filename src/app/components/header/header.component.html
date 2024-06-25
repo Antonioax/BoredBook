@@ -1,5 +1,5 @@
 <div
-  class="max-sm:hidden h-12 bg-slate-900 bg-opacity-50 shadow-lg flex items-center justify-between px-3 text-slate-400 fixed w-full"
+  class="max-sm:hidden h-12 bg-main bg-opacity-50 shadow-lg flex items-center justify-between px-3 text-ambient fixed w-full"
 >
   <div class="flex gap-3">
     <a routerLink="/posts" routerLinkActive="active-link">Posts</a>
@@ -22,7 +22,7 @@
 @if(isMenu) {
 <div class="sm:hidden h-screen w-screen fixed z-10" (click)="isMenu = false">
   <div
-    class="sm:hidden h-screen min-w-[50vw] bg-slate-900 bg-opacity-80 shadow-lg flex flex-col items-center py-3 text-slate-400 fixed"
+    class="sm:hidden h-screen min-w-[50vw] bg-main bg-opacity-80 shadow-lg flex flex-col items-center py-3 text-ambient fixed"
     (click)="$event.stopPropagation()"
   >
     <div class="flex flex-col gap-3 items-center py-6 border-b border-white w-[80%]">
@@ -45,19 +45,6 @@
 </div>
 } @else {
 <div class="sm:hidden fixed top-4 left-4" (click)="isMenu = !isMenu">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke-width="1.5"
-    stroke="white"
-    class="size-8"
-  >
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-    />
-  </svg>
+  <img src="assets/images/menu.svg" alt="Menu icon" />
 </div>
 }
