@@ -21,7 +21,6 @@ export interface EventData {
   standalone: true,
   imports: [FormsModule],
   templateUrl: './pagination.component.html',
-  styleUrl: './pagination.component.scss',
 })
 export class PaginationComponent implements OnInit {
   length = input<number>(0);

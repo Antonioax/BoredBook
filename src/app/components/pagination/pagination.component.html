@@ -1,6 +1,6 @@
-<div class="mb-10 mx-20 flex justify-center items-center text-center text-sm">
+<div class="mb-10 flex justify-center items-center text-center text-sm">
   <div
-    class="bg-slate-100 bg-opacity-0 w-[80vw] flex flex-col items-center gap-6 py-6 rounded-lg"
+    class="bg-slate-100 bg-opacity-0 w-full flex flex-col items-center gap-6 py-6 rounded-lg"
   >
     <div class="flex">
       <div
@@ -9,20 +9,7 @@
         }}"
         (click)="onBack()"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="{1.5}"
-          stroke="white"
-          className="size-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15.75 19.5 8.25 12l7.5-7.5"
-          />
-        </svg>
+        <img src="assets/images/arrowLeft.svg" alt="Back arrow" />
       </div>
       <div
         class="w-7 h-7 hover:cursor-pointer {{
@@ -30,20 +17,7 @@
         }}"
         (click)="onNext()"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="{1.5}"
-          stroke="white"
-          className="size-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="m8.25 4.5 7.5 7.5-7.5 7.5"
-          />
-        </svg>
+        <img src="assets/images/arrowRight.svg" alt="Next arrow" />
       </div>
     </div>
     <div class="text-white">
@@ -59,10 +33,7 @@
           [(ngModel)]="selectedOption"
         >
           @for (option of pageOptions(); track $index) {
-          <option
-            [value]="option"
-            class="text-center"
-          >
+          <option [value]="option" class="text-center">
             {{ option }}
           </option>
           }

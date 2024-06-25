@@ -2,12 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
-import { DialogComponent } from '../../components/dialog/dialog.component';
+import { DialogComponent } from '../../components/shared/dialog/dialog.component';
+import { LoaderComponent } from "../../components/shared/loader/loader.component";
 
 @Component({
   standalone: true,
   templateUrl: './login.component.html',
-  imports: [FormsModule],
+  imports: [FormsModule, LoaderComponent],
 })
 export class LoginComponent implements OnInit, OnDestroy {
   isLoading = false;
