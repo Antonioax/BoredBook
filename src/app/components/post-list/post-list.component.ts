@@ -10,12 +10,19 @@ import {
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.model';
 import { LoaderComponent } from '../shared/loader/loader.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { NgOptimizedImage } from "@angular/common";
 
 @Component({
   selector: 'app-post-list',
   templateUrl: './post-list.component.html',
   standalone: true,
-  imports: [PaginationComponent, LoaderComponent],
+  imports: [
+    PaginationComponent,
+    LoaderComponent,
+    NgxSkeletonLoaderModule,
+    NgOptimizedImage,
+  ],
 })
 export class PostListComponent implements OnInit, OnDestroy {
   allPosts: Post[] = [];
@@ -83,6 +90,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         });
       })
       .catch((err) => console.log(err));
+
     this.isAuthenticated = this.authService.getIsAuth();
     this.authListenerSub = this.authService
       .getAuthStatusListener()
